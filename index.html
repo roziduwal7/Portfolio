@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rojina Duwal – QA Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  /* ─── CSS Variables ─────────────────────────────── */
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #1e2330;
+    --accent: #00e5a0;
+    --accent2: #0077ff;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --heading-font: 'Syne', sans-serif;
+    --body-font: 'DM Sans', sans-serif;
+    --nav-h: 68px;
+    --radius: 14px;
+    --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ─── Reset & Base ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body-font);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ─── Noise Overlay ─────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.4;
+  }
+
+  /* ─── Navigation ─────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--heading-font);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links {
+    display: flex; gap: 2rem;
+  }
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: var(--transition);
+  }
+  .mobile-menu {
+    display: none; position: fixed; inset: var(--nav-h) 0 0 0; z-index: 99;
+    background: rgba(10,12,16,0.97); flex-direction: column;
+    align-items: center; justify-content: center; gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--heading-font);
+    font-size: 1.6rem; font-weight: 700;
+    color: var(--text); transition: color var(--transition);
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+
+  /* ─── Section Layout ─────────────────────────────── */
+  section {
+    position: relative; z-index: 1;
+    padding: 100px 5%;
+    max-width: 1140px; margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--heading-font);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.03em; margin-bottom: 3rem;
+  }
+  .divider {
+    width: 100%; height: 1px;
+    background: var(--border); margin: 0 5%;
+    width: calc(100% - 10%);
+  }
+
+  /* ─── Hero / About ───────────────────────────────── */
+  #about {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: calc(var(--nav-h) + 60px);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,229,160,0.08);
+    border: 1px solid rgba(0,229,160,0.25);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--accent); margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; } 50% { opacity:0.3; }
+  }
+  .hero-name {
+    font-family: var(--heading-font);
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 800; line-height: 1.0;
+    letter-spacing: -0.04em;
+    animation: fadeUp 0.9s 0.1s both;
+  }
+  .hero-name .accent { color: var(--accent); }
+  .hero-title {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 300; color: var(--muted);
+    margin: 1rem 0 1.5rem;
+    animation: fadeUp 0.9s 0.2s both;
+  }
+  .hero-bio {
+    font-size: 1rem; line-height: 1.8;
+    color: #9ca3af; max-width: 480px;
+    animation: fadeUp 0.9s 0.3s both;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    animation: fadeUp 0.9s 0.4s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: 8px;
+    font-weight: 500; font-size: 0.9rem;
+    cursor: pointer; transition: var(--transition); border: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+  }
+  .btn-primary:hover {
+    background: #00ffb3;
+    box-shadow: 0 0 24px rgba(0,229,160,0.4);
+    transform: translateY(-2px);
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent); color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .hero-avatar {
+    position: relative; display: flex; justify-content: center; align-items: center;
+    animation: fadeUp 0.9s 0.2s both;
+  }
+  .avatar-ring {
+    position: relative; width: 320px; height: 320px;
+  }
+  .avatar-ring::before {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent), var(--accent2), var(--accent));
+    animation: spin 8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .avatar-inner {
+    position: absolute; inset: 3px;
+    border-radius: 50%;
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; z-index: 1;
+  }
+  .avatar-placeholder {
+    font-family: var(--heading-font);
+    font-size: 5rem; font-weight: 800;
+    color: var(--accent); opacity: 0.7;
+  }
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2.5rem;
+    animation: fadeUp 0.9s 0.5s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--heading-font);
+    font-size: 1.8rem; font-weight: 800; color: var(--accent);
+  }
+  .stat-lbl { font-size: 0.75rem; color: var(--muted); }
+
+  /* ─── Skills ─────────────────────────────────────── */
+  #skills { padding-top: 80px; }
+  .skills-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: var(--transition);
+  }
+  .skill-card:hover {
+    border-color: rgba(0,229,160,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+  .skill-card-title {
+    font-family: var(--heading-font);
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px;
+  }
+  .skill-card-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(0,229,160,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 5px 12px; border-radius: 100px;
+    font-size: 0.8rem; color: #9ca3af;
+    transition: var(--transition);
+  }
+  .skill-tag:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(0,229,160,0.06);
+  }
+  .soft-skill-list { display: flex; flex-direction: column; gap: 10px; }
+  .soft-skill-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.9rem; color: #9ca3af;
+  }
+  .soft-skill-item::before {
+    content: ''; flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ─── Experience ──────────────────────────────────── */
+  #experience { padding-top: 80px; }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 8px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 3rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: -2.55rem; top: 8px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,229,160,0.2);
+  }
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    transition: var(--transition);
+  }
+  .exp-card:hover {
+    border-color: rgba(0,229,160,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  }
+  .exp-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .exp-role {
+    font-family: var(--heading-font);
+    font-size: 1.1rem; font-weight: 700;
+  }
+  .exp-date {
+    font-size: 0.8rem; color: var(--accent);
+    background: rgba(0,229,160,0.08);
+    border: 1px solid rgba(0,229,160,0.2);
+    padding: 3px 10px; border-radius: 100px;
+    white-space: nowrap; align-self: flex-start;
+  }
+  .exp-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+  .exp-duties { display: flex; flex-direction: column; gap: 6px; }
+  .exp-duty {
+    font-size: 0.9rem; color: #9ca3af;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .exp-duty::before {
+    content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* ─── Education ──────────────────────────────────── */
+  #education { padding-top: 80px; }
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 2rem 2rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: var(--transition);
+  }
+  .edu-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    border-radius: 4px 0 0 4px;
+  }
+  .edu-card:hover {
+    border-color: rgba(0,229,160,0.25);
+    transform: translateX(4px);
+  }
+  .edu-degree {
+    font-family: var(--heading-font);
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 4px;
+  }
+  .edu-school { font-size: 0.95rem; color: var(--muted); margin-bottom: 4px; }
+  .edu-year { font-size: 0.8rem; color: var(--accent); }
+
+  /* ─── Projects ──────────────────────────────────── */
+  #projects { padding-top: 80px; }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem; position: relative;
+    display: flex; flex-direction: column;
+    transition: var(--transition);
+    cursor: default;
+  }
+  .project-card:hover {
+    border-color: rgba(0,229,160,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .project-num {
+    font-family: var(--heading-font);
+    font-size: 3.5rem; font-weight: 800;
+    color: rgba(0,229,160,0.06);
+    position: absolute; top: 1.2rem; right: 1.5rem;
+    line-height: 1; pointer-events: none;
+    transition: var(--transition);
+  }
+  .project-card:hover .project-num { color: rgba(0,229,160,0.12); }
+  .project-role-badge {
+    display: inline-flex;
+    background: rgba(0,119,255,0.1);
+    border: 1px solid rgba(0,119,255,0.25);
+    color: #60a5fa;
+    font-size: 0.75rem; font-weight: 500;
+    padding: 3px 10px; border-radius: 100px;
+    margin-bottom: 1rem; width: fit-content;
+  }
+  .project-name {
+    font-family: var(--heading-font);
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .project-desc { font-size: 0.88rem; color: #9ca3af; margin-bottom: 1.2rem; flex: 1; }
+  .project-responsibilities {
+    margin-bottom: 1.2rem;
+  }
+  .project-resp-title {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+  .project-resp-list { display: flex; flex-direction: column; gap: 4px; }
+  .project-resp-item { font-size: 0.82rem; color: #9ca3af; padding-left: 1rem; position: relative; }
+  .project-resp-item::before {
+    content: '·'; position: absolute; left: 0; color: var(--accent);
+  }
+  .project-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .tool-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 0.75rem; color: var(--muted);
+    padding: 3px 10px; border-radius: 100px;
+  }
+
+  /* ─── Contact ──────────────────────────────────── */
+  #contact { padding-top: 80px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.4rem;
+    transition: var(--transition);
+  }
+  .contact-link:hover {
+    border-color: rgba(0,229,160,0.3);
+    transform: translateX(4px);
+  }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(0,229,160,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-detail { display: flex; flex-direction: column; }
+  .contact-type { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .contact-value { font-size: 0.9rem; font-weight: 500; }
+  .contact-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .form-group input,
+  .form-group textarea {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px;
+    color: var(--text); font-family: var(--body-font); font-size: 0.9rem;
+    outline: none; transition: var(--transition);
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,229,160,0.1);
+  }
+  .form-group textarea { min-height: 120px; }
+  .form-submit { width: 100%; justify-content: center; }
+
+  /* ─── Footer ──────────────────────────────────── */
+  footer {
+    text-align: center; padding: 2rem 5%;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.85rem;
+    position: relative; z-index: 1;
+  }
+
+  /* ─── Animations ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── Responsive ─────────────────────────────── */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-avatar { order: -1; }
+    .avatar-ring { width: 220px; height: 220px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 70px 5%; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav>
+  <div class="nav-logo">R<span>.</span>Duwal</div>
+  <ul class="nav-links" id="navLinks"></ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu"></div>
+
+<!-- ─── Sections ─── -->
+<section id="about"></section>
+<div class="divider"></div>
+<section id="skills"></section>
+<div class="divider"></div>
+<section id="experience"></section>
+<div class="divider"></div>
+<section id="education"></section>
+<div class="divider"></div>
+<section id="projects"></section>
+<div class="divider"></div>
+<section id="contact"></section>
+<footer id="footer"></footer>
+
+<script>
+/* ══════════════════════════════════════════════════
+   DATA CONSTANTS – Edit these to update the site
+   ══════════════════════════════════════════════════ */
+
+// ── Personal Info ──────────────────────────────────
+const INFO = {
+  name: "Rojina Duwal",
+  firstName: "Rojina",
+  lastName: "Duwal",
+  title: "QA Engineer",
+  email: "roziduwal7@gmail.com",
+  linkedin: "https://www.linkedin.com/in/rojina-duwal/",
+  facebook: "https://www.facebook.com/rozi.duwal",
+  phone: null, // Add phone number string or leave null
+  avatarUrl: null, // Add image URL or leave null for initials
+  bio: "I am a QA Engineer with experience in both manual and automated testing. I specialize in ensuring software quality, identifying bugs, and improving system reliability. My goal is to help build high-quality software that provides a seamless user experience.",
+  stats: [
+    { num: "3+", label: "Projects" },
+    { num: "2+", label: "Tools" },
+    { num: "1", label: "Internship" },
+  ]
+};
+
+// ── Navigation Links ──────────────────────────────
+const NAV_LINKS = [
+  { label: "About",      href: "#about" },
+  { label: "Skills",     href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Education",  href: "#education" },
+  { label: "Projects",   href: "#projects" },
+  { label: "Contact",    href: "#contact" },
+];
+
+// ── Skills ────────────────────────────────────────
+const SKILLS = {
+  technical: [
+    {
+      category: "Testing Types / Methods",
+      icon: "🧪",
+      tags: ["Manual Testing", "Automation Testing", "Functional Testing", "Regression Testing", "Smoke & Sanity Testing", "Integration Testing", "UAT", "API Testing"],
+    },
+    {
+      category: "Tools / Frameworks",
+      icon: "🛠",
+      tags: ["Postman / REST API Testing", "JIRA / Bug Tracking"],
+    },
+    {
+      category: "Programming / Scripting",
+      icon: "💻",
+      tags: ["JavaScript"],
+    },
+  ],
+  soft: [
+    "Attention to Detail",
+    "Analytical Thinking",
+    "Problem Solving",
+    "Communication & Reporting",
+    "Team Collaboration",
+    "Time Management",
+  ],
+};
+
+// ── Experience ────────────────────────────────────
+const EXPERIENCE = [
+  {
+    role: "QA Intern",
+    company: "Infotraid",
+    period: "February 2026 – Present",
+    duties: [
+      "Assisted in manual and automation testing of web applications",
+      "Created and executed test cases for functional and regression testing",
+      "Reported bugs and tracked them using JIRA",
+      "Collaborated with developers and QA team to improve software quality",
+      "Gained experience with tools like Postman and JIRA",
+    ],
+  },
+];
+
+// ── Education ─────────────────────────────────────
+const EDUCATION = [
+  {
+    degree: "Bachelor's in Information Technology (BIM)",
+    school: "Bhaktapur Multiple Campus, Tribhuvan University",
+    year: "Expected Graduation: 2026",
+  },
+];
+
+// ── Projects ──────────────────────────────────────
+const PROJECTS = [
+  {
+    name: "E-Commerce Website",
+    role: "QA Engineer",
+    description: "Tested a web-based e-commerce platform and reported bugs using JIRA.",
+    responsibilities: [
+      "Tested Admin and Customer modules",
+      "Wrote Test Cases in Excel",
+    ],
+    tools: ["Postman", "JIRA", "Chrome DevTools"],
+  },
+  {
+    name: "Attendance Management System (AMS)",
+    role: "QA Engineer",
+    description: "Managed testing for employee attendance and leave features.",
+    responsibilities: [
+      "Tested Admin and Employee modules",
+      "Verified Monthly Attendance Overview chart",
+      "Tested Leave Request functionality",
+      "Checked Holiday calendar",
+      "Performed API testing with Postman",
+    ],
+    tools: ["Postman", "JIRA", "Chrome DevTools"],
+  },
+  {
+    name: "Restaurant Management System (RMS)",
+    role: "Manual & API Tester",
+    description: "Tested orders, dishes, add-ons, and bell requests.",
+    responsibilities: [
+      "Tested Order APIs",
+      "Checked dish and add-on relationships",
+      "Tested bell request creation",
+      "Verified database error handling (400 vs 500 errors)",
+      "Performed negative and edge case testing",
+    ],
+    tools: ["Postman", "JIRA"],
+  },
+];
+
+/* ══════════════════════════════════════════════════
+   RENDER FUNCTIONS
+   ══════════════════════════════════════════════════ */
+
+// ── Nav ──
+function renderNav() {
+  const ul = document.getElementById('navLinks');
+  const mobile = document.getElementById('mobileMenu');
+  NAV_LINKS.forEach(link => {
+    ul.innerHTML += `<li><a href="${link.href}">${link.label}</a></li>`;
+    mobile.innerHTML += `<a href="${link.href}" class="mobile-link">${link.label}</a>`;
+  });
+  // Hamburger toggle
+  const ham = document.getElementById('hamburger');
+  ham.addEventListener('click', () => mobile.classList.toggle('open'));
+  mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobile.classList.remove('open')));
+}
+
+// ── About ──
+function renderAbout() {
+  const initials = INFO.firstName[0] + INFO.lastName[0];
+  const avatarContent = INFO.avatarUrl
+    ? `<img src="${INFO.avatarUrl}" alt="${INFO.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`
+    : `<span class="avatar-placeholder">${initials}</span>`;
+
+  const statsHTML = INFO.stats.map(s => `
+    <div class="stat">
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-lbl">${s.label}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('about').innerHTML = `
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="hero-badge">Available for Opportunities</div>
+        <h1 class="hero-name">${INFO.firstName}<br><span class="accent">${INFO.lastName}</span></h1>
+        <p class="hero-title">${INFO.title}</p>
+        <p class="hero-bio">${INFO.bio}</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contact">Get in Touch</a>
+          <a class="btn btn-ghost" href="#projects">View Projects</a>
+        </div>
+        <div class="hero-stats">${statsHTML}</div>
+      </div>
+      <div class="hero-avatar">
+        <div class="avatar-ring">
+          <div class="avatar-inner">${avatarContent}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Skills ──
+function renderSkills() {
+  const techCards = SKILLS.technical.map(cat => `
+    <div class="skill-card reveal">
+      <div class="skill-card-title">
+        <div class="skill-card-icon">${cat.icon}</div>
+        ${cat.category}
+      </div>
+      <div class="skill-tags">
+        ${cat.tags.map(t => `<span class="skill-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  const softItems = SKILLS.soft.map(s => `
+    <div class="soft-skill-item">${s}</div>
+  `).join('');
+
+  document.getElementById('skills').innerHTML = `
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      ${techCards}
+      <div class="skill-card reveal">
+        <div class="skill-card-title">
+          <div class="skill-card-icon">🧠</div>
+          Soft Skills
+        </div>
+        <div class="soft-skill-list">${softItems}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Experience ──
+function renderExperience() {
+  const items = EXPERIENCE.map(exp => `
+    <div class="timeline-item reveal">
+      <div class="exp-card">
+        <div class="exp-header">
+          <span class="exp-role">${exp.role}</span>
+          <span class="exp-date">${exp.period}</span>
+        </div>
+        <div class="exp-company">@ ${exp.company}</div>
+        <div class="exp-duties">
+          ${exp.duties.map(d => `<div class="exp-duty">${d}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('experience').innerHTML = `
+    <div class="section-label">Career</div>
+    <h2 class="section-title">Experience</h2>
+    <div class="timeline">${items}</div>
+  `;
+}
+
+// ── Education ──
+function renderEducation() {
+  const cards = EDUCATION.map(edu => `
+    <div class="edu-card reveal">
+      <div class="edu-degree">${edu.degree}</div>
+      <div class="edu-school">${edu.school}</div>
+      <div class="edu-year">${edu.year}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('education').innerHTML = `
+    <div class="section-label">Academic</div>
+    <h2 class="section-title">Education</h2>
+    <div style="display:flex; flex-direction:column; gap:1rem;">${cards}</div>
+  `;
+}
+
+// ── Projects ──
+function renderProjects() {
+  const cards = PROJECTS.map((p, i) => `
+    <div class="project-card reveal">
+      <div class="project-num">0${i+1}</div>
+      <div class="project-role-badge">${p.role}</div>
+      <div class="project-name">${p.name}</div>
+      <div class="project-desc">${p.description}</div>
+      <div class="project-responsibilities">
+        <div class="project-resp-title">Responsibilities</div>
+        <div class="project-resp-list">
+          ${p.responsibilities.map(r => `<div class="project-resp-item">${r}</div>`).join('')}
+        </div>
+      </div>
+      <div class="project-tools">
+        ${p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('projects').innerHTML = `
+    <div class="section-label">Work</div>
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">${cards}</div>
+  `;
+}
+
+// ── Contact ──
+function renderContact() {
+  const links = [
+    { icon: '✉️', type: 'Email', value: INFO.email, href: `mailto:${INFO.email}` },
+    { icon: '💼', type: 'LinkedIn', value: 'linkedin.com/in/rojina-duwal', href: INFO.linkedin },
+    { icon: '📘', type: 'Facebook', value: 'facebook.com/rozi.duwal', href: INFO.facebook },
+    ...(INFO.phone ? [{ icon: '📞', type: 'Phone', value: INFO.phone, href: `tel:${INFO.phone}` }] : []),
+  ];
+
+  const linkCards = links.map(l => `
+    <a class="contact-link" href="${l.href}" target="_blank" rel="noopener noreferrer">
+      <div class="contact-icon">${l.icon}</div>
+      <div class="contact-detail">
+        <span class="contact-type">${l.type}</span>
+        <span class="contact-value">${l.value}</span>
+      </div>
+    </a>
+  `).join('');
+
+  document.getElementById('contact').innerHTML = `
+    <div class="section-label">Let's Connect</div>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">${linkCards}</div>
+      <form class="contact-form reveal" id="contactForm" onsubmit="handleForm(event)">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell me about your project or opportunity…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">Send Message →</button>
+      </form>
+    </div>
+  `;
+}
+
+// ── Footer ──
+function renderFooter() {
+  document.getElementById('footer').innerHTML =
+    `© ${new Date().getFullYear()} ${INFO.name} · Built with ❤️ · QA Engineer`;
+}
+
+// ── Form handler ──
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = '✓ Message Sent!';
+  btn.style.background = '#059669';
+  setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; e.target.reset(); }, 3000);
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLL REVEAL
+   ══════════════════════════════════════════════════ */
+function initReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+/* ══════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════ */
+renderNav();
+renderAbout();
+renderSkills();
+renderExperience();
+renderEducation();
+renderProjects();
+renderContact();
+renderFooter();
+initReveal();
+</script>
+</body>
+</html>
